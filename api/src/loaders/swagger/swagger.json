@@ -1,0 +1,143 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Toolbox Challenge",
+    "description": "## API for retrieve files from external api",
+    "version": "1.0.0",
+    "contact": {
+      "email": "fervaldes11@gmail.com"
+    }
+  },
+
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Desarrollo"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Files",
+      "description": "Operations about files."
+    }
+  ],
+  "paths": {
+    "/files/data": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return a list of files with content parsed",
+        "description": "# Service for retrieve files with content parsed\n - This service request a external api to retrive a list of files, then with each file retrieve data content and finally build a pretty json for the frontend.",
+        "parameters": [
+          {
+            "name": "fileName",
+            "in": "query",
+            "type": "string",
+            "description": "string must be end with .csv",
+            "required": false,
+            "example": "test9.csv"
+          }
+        ],
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/FilesData"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/GatewayError"
+          }
+        }
+      }
+    },
+    "/files/list": {
+      "get": {
+        "tags": ["Files"],
+        "summary": "Return a list of files",
+        "description": "# Service for retrieve files\n - This service request a external api to retrive a list of files.",
+        "responses": {
+          "200": {
+            "$ref": "#/components/responses/Files"
+          },
+          "500": {
+            "$ref": "#/components/responses/InternalError"
+          },
+          "502": {
+            "$ref": "#/components/responses/GatewayError"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "responses": {
+      "GatewayError": {
+        "description": "Gateway error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "example": {
+                "error": {
+                  "code": 502,
+                  "message": "External api response with error."
+                }
+              }
+            }
+          }
+        }
+      },
+      "InternalError": {
+        "description": "Internal error",
+        "content": {
+          "application/json": {
+            "schema": {
+              "example": {
+                "error": {
+                  "code": 500,
+                  "message": "Error description"
+                }
+              }
+            }
+          }
+        }
+      },
+      "FilesData": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "example": {
+                "file": "file1.csv",
+                "lines": [
+                   {
+                      "text" :"RgTya",
+                      "number": 64075909,
+                      "hex": "70ad29aacf0b690b0467fe2b2767f765"
+                   }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "Files": {
+        "content": {
+          "application/json": {
+            "schema": {
+              "example": [
+                "test1.csv",
+                "test2.csv",
+                "test3.csv",
+                "test18.csv",
+                "test4.csv",
+                "test5.csv",
+                "test6.csv",
+                "test9.csv",
+                "test15.csv"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
